@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git url: 'https://github.com/your-github-username/cicd-sample-app', branch: 'main'
+                git url: 'git@github.com:k8s-gurus/cicd-sample-app.git', branch: 'main', credentialsId: 'github-ssh-key'
             }
         }
 
