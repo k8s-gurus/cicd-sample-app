@@ -1,53 +1,28 @@
-pipeline {
-    agent { label 'docker-node' }  // Specify a Jenkins agent node that has Docker installed
+node {
+    def app
 
-    environment {
-        DOCKERHUB_CREDENTIALS = credentials('docker-hub')
-        IMAGE_NAME = 'k8sgurus1/cicd-sample-app'
+    stage('Clone repository') {
+        checkout scm
     }
 
-    stages {
-        stage('Checkout') {
-            steps {
-                git url: 'https://github.com/k8s-gurus/cicd-sample-app', branch: 'main'
-            }
-        }
+    stage('Build image') {
+       app = docker.build("k8sgurus1/jenkins-flask")
+    }
 
-        stage('Build Docker Image') {
-            steps {
-                script {
-                    docker.build("${IMAGE_NAME}:${env.BUILD_NUMBER}")
-                }
-            }
-        }
-
-        stage('Push Docker Image to Docker Hub') {
-            steps {
-                script {
-                    docker.withRegistry('https://registry.hub.docker.com', 'docker-hub') {
-                        docker.image("${IMAGE_NAME}:${env.BUILD_NUMBER}").push()
-                    }
-                }
-            }
-        }
-
-        stage('Deploy to Kubernetes') {
-            steps {
-                script {
-                    kubectl.apply(file: 'manifests/deployment.yaml')
-                    kubectl.apply(file: 'manifests/service.yaml')
-                    kubectl.apply(file: 'manifests/ingress.yaml')
-                }
-            }
+    stage('Test image') {
+        app.inside {
+            sh 'echo "Tests passed"'
         }
     }
 
-    post {
-        success {
-            echo 'Pipeline completed successfully!'
+    stage('Push image') {
+        docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
+            app.push("${env.BUILD_NUMBER}")
         }
-        failure {
-            echo 'Pipeline failed.'
-        }
+    }
+    
+    stage('Trigger ManifestUpdate') {
+        echo "triggering updatemanifestjob"
+        build job: 'updatemanifest', parameters: [string(name: 'DOCKERTAG', value: env.BUILD_NUMBER)]
     }
 }

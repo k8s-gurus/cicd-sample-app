@@ -1,18 +1,17 @@
-# Dockerfile
-FROM node:14
+# Use an official Python runtime as a parent image
+FROM python:alpine
 
-# Set working directory
-WORKDIR /usr/src/app
+# Set the working directory in the container
+WORKDIR /app
 
-# Install dependencies
-COPY package*.json ./
-RUN npm install
+# Copy the current directory contents into the container at /app
+COPY . /app
 
-# Copy app source code
-COPY . .
+# Install any needed packages specified in requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Expose port 8080
-EXPOSE 8080
+# Make port 5000 available to the world outside this container
+EXPOSE 5000
 
-# Start the application
-CMD ["npm", "start"]
+# Run app.py when the container launches
+CMD ["python", "app.py"]
