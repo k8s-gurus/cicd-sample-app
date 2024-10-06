@@ -15,6 +15,6 @@ spec:
     spec:
       containers:
       - name: cicd-sample-app
-        image: your-dockerhub-username/cicd-sample-app:latest
+        image: k8sgurus1/cicd-sample-app:latest
         ports:
         - containerPort: 8080

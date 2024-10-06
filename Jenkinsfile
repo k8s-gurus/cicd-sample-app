@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKERHUB_CREDENTIALS = credentials('docker-hub')
-        IMAGE_NAME = 'your-dockerhub-username/cicd-sample-app'
+        IMAGE_NAME = 'k8sgurus1/cicd-sample-app'
     }
 
     stages {
