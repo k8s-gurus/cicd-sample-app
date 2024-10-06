@@ -2,7 +2,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: cicd-sample-app-ingress
-  namespace: default
+  namespace: cicd-sample
   annotations:
     kubernetes.io/ingress.class: "nginx"  # Assuming you're using nginx ingress
     cert-manager.io/cluster-issuer: "letsencrypt-prod"  # For automatic TLS certs if using cert-manager

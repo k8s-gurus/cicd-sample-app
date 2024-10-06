@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: cicd-sample-app
-  namespace: default
+  namespace: cicd-sample
 spec:
   replicas: 1
   selector:
