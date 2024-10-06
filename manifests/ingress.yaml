@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: cicd-sample-app-ingress
+  namespace: default
+  annotations:
+    kubernetes.io/ingress.class: "nginx"  # Assuming you're using nginx ingress
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"  # For automatic TLS certs if using cert-manager
+spec:
+  rules:
+  - host: cicd.k8sgurus.us
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: cicd-sample-app-service
+            port:
+              number: 80
+  tls:
+  - hosts:
+    - cicd.k8sgurus.us
+    secretName: cicd-k8sgurus-tls  # Name of the TLS secret

@@ -1,0 +1,13 @@
+// package.json
+{
+    "name": "cicd-sample-app",
+    "version": "1.0.0",
+    "description": "Sample app for CI/CD pipeline with Ingress",
+    "main": "app.js",
+    "scripts": {
+      "start": "node app.js"
+    },
+    "dependencies": {
+      "express": "^4.17.1"
+    }
+  }

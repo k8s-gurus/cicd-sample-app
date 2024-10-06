@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cicd-sample-app
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cicd-sample-app
+  template:
+    metadata:
+      labels:
+        app: cicd-sample-app
+    spec:
+      containers:
+      - name: cicd-sample-app
+        image: your-dockerhub-username/cicd-sample-app:latest
+        ports:
+        - containerPort: 8080
