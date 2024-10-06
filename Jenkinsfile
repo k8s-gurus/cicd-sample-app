@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent { label 'docker-node' }  // Specify a Jenkins agent node that has Docker installed
 
     environment {
         DOCKERHUB_CREDENTIALS = credentials('docker-hub')
@@ -7,14 +7,6 @@ pipeline {
     }
 
     stages {
-        stage('Install Docker') {
-            steps {
-                sh '''
-                apt-get update && apt-get install -y docker.io
-                '''
-            }
-        }
-
         stage('Checkout') {
             steps {
                 git url: 'https://github.com/k8s-gurus/cicd-sample-app', branch: 'main'
